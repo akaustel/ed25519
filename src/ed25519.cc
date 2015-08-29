@@ -75,7 +75,11 @@ NAN_METHOD(Sign) {
 	const unsigned char* messageData = (unsigned char*)Buffer::Data(message);
 	size_t messageLen = Buffer::Length(message);
 	unsigned long long sigLen = 64 + messageLen;
-	unsigned char signatureMessageData[sigLen];
+	//unsigned char signatureMessageData[sigLen];
+
+	v8::Local<v8::Object> signatureMessageBuffer = NanNewBufferHandle(sigLen);
+	unsigned char* signatureMessageData = (unsigned char*)Buffer::Data(signatureMessageBuffer);
+
 	crypto_sign(signatureMessageData, &sigLen, messageData, messageLen, privateKey);
 
 	v8::Local<v8::Object> signature = NanNewBufferHandle(64);
@@ -120,5 +124,5 @@ void InitModule(Handle<Object> exports) {
 	exports->Set(NanNew("Verify"), NanNew<FunctionTemplate>(Verify)->GetFunction());
 }
 
-NODE_MODULE(native, InitModule)
+NODE_MODULE(ed25519, InitModule)
 

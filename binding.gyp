@@ -58,10 +58,34 @@
           ],
           "conditions" : [
             ["target_arch=='ia32'", {
-              "include_dirs": [ "<(node_root_dir)/deps/openssl/config/piii" ]
+              'variables': {
+                'openssl_root%': 'C:/OpenSSL-Win32'
+              },
+              'defines': [
+                'uint=unsigned int',
+              ],
+              'libraries': [ 
+                '-l<(openssl_root)/lib/libeay32.lib',
+              ],
+              'include_dirs': [
+                '<(openssl_root)/include',
+                '<!(node -e "require(\'nan\')")',
+              ]
             }],
             ["target_arch=='x64'", {
-              "include_dirs": [ "<(node_root_dir)/deps/openssl/config/k8" ]
+              'variables': {
+                'openssl_root%': 'C:/OpenSSL-Win64'
+              },
+              'defines': [
+                'uint=unsigned int',
+              ],
+              'libraries': [ 
+                '-l<(openssl_root)/lib/libeay32.lib',
+              ],
+              'include_dirs': [
+                '<(openssl_root)/include',
+                '<!(node -e "require(\'nan\')")',
+              ]
             }],
             ["target_arch=='arm'", {
               "include_dirs": [ "<(node_root_dir)/deps/openssl/config/arm" ]
